@@ -46,7 +46,6 @@ SquareMatrix operator*(const SquareMatrix& matr, double num) {
 double SquareMatrix::determinant() {
     if (length == 0) return 0;
 
-    // Создаем копию матрицы, чтобы не изменять оригинальную
     double** tempMat = new double*[length];
     for (int i = 0; i < length; i++) {
         tempMat[i] = new double[length];
@@ -55,11 +54,9 @@ double SquareMatrix::determinant() {
         }
     }
 
-    double det = 1.0; // Изначальное значение определителя
+    double det = 1.0; 
 
-    // Приводим матрицу к верхнетреугольному виду методом Гаусса
     for (int col = 0; col < length; col++) {
-        // Ищем строку с максимальным элементом в текущем столбце
         int maxRow = col;
         for (int row = col + 1; row < length; row++) {
             if (std::abs(tempMat[row][col]) > std::abs(tempMat[maxRow][col])) {
@@ -67,10 +64,7 @@ double SquareMatrix::determinant() {
             }
         }
 
-        // Если максимальный элемент равен 0 (с точностью до погрешности), 
-        // то определитель 0
         if (std::abs(tempMat[maxRow][col]) < 1e-10) {
-            // Освобождаем память перед выходом
             for (int i = 0; i < length; i++) {
                 delete[] tempMat[i];
             }
@@ -78,13 +72,11 @@ double SquareMatrix::determinant() {
             return 0.0;
         }
 
-        // Меняем местами текущую строку и строку с максимальным элементом
         if (maxRow != col) {
             std::swap(tempMat[col], tempMat[maxRow]);
-            det *= -1; // При перестановке строк знак определителя меняется
+            det *= -1;
         }
 
-        // Зануляем элементы ниже текущего диагонального элемента
         for (int row = col + 1; row < length; row++) {
             double factor = tempMat[row][col] / tempMat[col][col];
             for (int k = col; k < length; k++) {
@@ -93,12 +85,10 @@ double SquareMatrix::determinant() {
         }
     }
 
-    // Вычисляем определитель как произведение диагональных элементов
     for (int i = 0; i < length; i++) {
         det *= tempMat[i][i];
     }
 
-    // Освобождаем память временной матрицы
     for (int i = 0; i < length; i++) {
         delete[] tempMat[i];
     }
