@@ -16,11 +16,10 @@ public:
     SquareMatrix operator=(const SquareMatrix& matr);
     double* operator[](unsigned int index);
     void transposition();
-    double determinant();
+    int determinant() const;
     void printMatrix() const;
-    void fillMatrix() const;
+    void fillMatrix();
     int getLength() const;
-    void setLength(int length);
     friend SquareMatrix operator*(const SquareMatrix& matr, double num);
     friend SquareMatrix operator*(double num, const SquareMatrix& matr);
     friend SquareMatrix operator+(const SquareMatrix& matr, double num);

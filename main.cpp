@@ -1,50 +1,100 @@
 #include <iostream>
 #include <vector>
 #include <algorithm>
+#include <cmath>
+#include <ctime>
 #include "SquareMatrix.h"
 
 template<typename T>
-void print(std::vector<T> v) {
-    for (int i = 0; i < v.size(); ++i) {
-        std::cout << v[i] << " ";
+void printVector(std::vector<T> vector) {
+    for (int i = 0; i < vector.size(); ++i) {
+        std::cout << vector[i] << " ";
     }
     std::cout << "\n";
 }
 
+
+void printMenu() {
+    std::cout << "\n\n---MENU---\n\n";
+    std::cout << "1. Sort vector\n";
+    std::cout << "2. Remove elements\n";
+    std::cout << "3. Exit\n";
+}
+
+
 int main() {
-    SquareMatrix a(1), b(2), c(3);
+    srand(time(0));
+    SquareMatrix a(1), b(2), c(3), d(4), e(5);
+    std::vector<int> determinantVector;
+    int choice;
 
-    std::cout << "Enter matrix a:\n";
-    std::cin >> a;
-    std::cout << "\n";
-    std::cout << a;
-    std::cout << "\n";
+    
+    while (true) {
+        a.fillMatrix();
+        b.fillMatrix();
+        c.fillMatrix();
+        d.fillMatrix();
+        e.fillMatrix();
 
-    std::cout << "Enter matrix b:\n";
-    std::cin >> b;
-    std::cout << "\n";
-    std::cout << b;
-    std::cout << "\n";
+        printMenu();
+        std::cout << "\nChoice: ";
+        std::cin >> choice;
 
-    std::cout << "Enter matrix c:\n";
-    std::cin >> c;
-    std::cout << "\n";
-    std::cout << c;
-    std::cout << "\n";
+        switch (choice) {
+            case 1: {
+                determinantVector = {a.determinant(), b.determinant(), c.determinant(), d.determinant(), e.determinant()};
 
-    std::vector<double> matrixVector = {a.determinant(), b.determinant(), c.determinant()};
-    std::cout << "Before erase:\n";
-    print(matrixVector);
+                std::cout << "Vector defore sort:\n";
+                printVector(determinantVector);
 
-    auto start = std::remove_if(
-        matrixVector.begin(),
-        matrixVector.end(),
-        [](int element) {
-            return element % 2 == 0;
+                std::sort(
+                    determinantVector.begin(),
+                    determinantVector.end(),
+                    [](const int& element1, const int& element2) {
+                        return element1 < element2;
+                    }
+                );
+
+                std::cout << "Vector after sort:\n";
+                printVector(determinantVector);
+
+                system("pause");
+                system("cls");
+                break;
+            }
+
+            case 2: {
+                determinantVector = {a.determinant(), b.determinant(), c.determinant(), d.determinant(), e.determinant()};
+
+                std::cout << "Vector defore remove:\n";
+                printVector(determinantVector);
+
+                determinantVector.erase (
+                    std::remove_if(
+                        determinantVector.begin(),
+                        determinantVector.end(),
+                        [](const int& element) {
+                            return element % 2 == 0;
+                        }
+                    ),
+                    determinantVector.end()
+                );
+
+                std::cout << "Vector after remove:\n";
+                printVector(determinantVector);
+
+                system("pause");
+                system("cls");
+                break;
+            }
+
+            case 3:
+                exit(0);
+                break;
+
+            default:
+                system("cls");
+                continue;
         }
-    );
-
-    matrixVector.erase(start, matrixVector.end());
-    std::cout << "\nAfter erase:\n";
-    print(matrixVector);
+    }
 }

@@ -3,7 +3,7 @@
 #include <stdexcept>
 #include "math.h"
 
-SquareMatrix::SquareMatrix() {}
+SquareMatrix::SquareMatrix(): length(0), matrix(nullptr) {}
 
 SquareMatrix::~SquareMatrix() {
     for (int i = 0; i < length; ++i) {
@@ -43,7 +43,7 @@ SquareMatrix operator*(const SquareMatrix& matr, double num) {
     return mt;
 }
 
-double SquareMatrix::determinant() {
+int SquareMatrix::determinant() const {
     if (length == 0) return 0;
 
     double** tempMat = new double*[length];
@@ -109,9 +109,6 @@ SquareMatrix operator*(double num, const SquareMatrix& matr) {
     return mt;
 }
 
-void SquareMatrix::setLength(int length) {
-    this->length = length;
-}
 
 SquareMatrix SquareMatrix::operator*(const SquareMatrix& matr) {
     if (this->length != matr.length) {
@@ -180,7 +177,7 @@ void SquareMatrix::printMatrix() const {
     }
 }
 
-void SquareMatrix::fillMatrix() const {
+void SquareMatrix::fillMatrix() {
     for (int i = 0; i < this->length; ++i) {
         for (int j = 0; j < this->length; ++j) {
             this->matrix[i][j] = rand() % 10;
