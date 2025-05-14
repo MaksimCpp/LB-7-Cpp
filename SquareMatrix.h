@@ -1,29 +1,43 @@
-#pragma once
-#include <iostream>
-
 class SquareMatrix {
 private:
-    int length;
-    double** matrix;
+    int size;
+    int** matrix;
+
+    void allocateMemory() {
+        matrix = new int*[size];
+        for (int i = 0; i < size; ++i) {
+            matrix[i] = new int[size](); 
+        }
+    }
+
+    void deallocateMemory() {
+        if (matrix) {
+            for (int i = 0; i < size; ++i) {
+                delete[] matrix[i];
+            }
+            delete[] matrix;
+            matrix = nullptr;
+        }
+    }
+
+    void copyFrom(const SquareMatrix& other) {
+        size = other.size;
+        allocateMemory();
+        for (int i = 0; i < size; ++i) {
+            for (int j = 0; j < size; ++j) {
+                matrix[i][j] = other.matrix[i][j];
+            }
+        }
+    }
 
 public:
     SquareMatrix();
     ~SquareMatrix();
-    SquareMatrix(int length);   
-    SquareMatrix(const SquareMatrix& matr);
-    SquareMatrix operator*(const SquareMatrix& matr);
-    SquareMatrix operator+(const SquareMatrix& matr);
-    SquareMatrix operator=(const SquareMatrix& matr);
-    double* operator[](unsigned int index);
-    void transposition();
+    void fillMatrix();
+    int getSize() const;
     int determinant() const;
     void printMatrix() const;
-    void fillMatrix();
-    int getLength() const;
-    friend SquareMatrix operator*(const SquareMatrix& matr, double num);
-    friend SquareMatrix operator*(double num, const SquareMatrix& matr);
-    friend SquareMatrix operator+(const SquareMatrix& matr, double num);
-    friend SquareMatrix operator+(double num, const SquareMatrix& matr);
-    friend std::ostream& operator<<(std::ostream& stream, const SquareMatrix& matr);
-    friend std::istream& operator>>(std::istream& stream, const SquareMatrix& matr);
+    explicit SquareMatrix(int size);
+    SquareMatrix(const SquareMatrix& other);
+    SquareMatrix& operator=(const SquareMatrix& other);
 };

@@ -1,62 +1,54 @@
 #include <iostream>
 #include <vector>
 #include <algorithm>
-#include <cmath>
+#include <random>
 #include <ctime>
 #include "SquareMatrix.h"
 
-template<typename T>
-void printVector(std::vector<T> vector) {
-    for (int i = 0; i < vector.size(); ++i) {
-        std::cout << vector[i] << " ";
-    }
-    std::cout << "\n";
-}
-
-
 void printMenu() {
     std::cout << "\n\n---MENU---\n\n";
-    std::cout << "1. Sort vector\n";
-    std::cout << "2. Remove elements\n";
+    std::cout << "1. Sort\n";
+    std::cout << "2. Remove elemets\n";
     std::cout << "3. Exit\n";
 }
 
-
 int main() {
     srand(time(0));
-    SquareMatrix a(1), b(2), c(3), d(4), e(5);
-    std::vector<int> determinantVector;
     int choice;
+    std::vector<SquareMatrix> matrices;
 
-    
     while (true) {
-        a.fillMatrix();
-        b.fillMatrix();
-        c.fillMatrix();
-        d.fillMatrix();
-        e.fillMatrix();
-
         printMenu();
         std::cout << "\nChoice: ";
         std::cin >> choice;
 
         switch (choice) {
             case 1: {
-                determinantVector = {a.determinant(), b.determinant(), c.determinant(), d.determinant(), e.determinant()};
+                for (int i = 0; i < 5; ++i) {
+                    SquareMatrix m(2);
+                    m.fillMatrix();
+                    matrices.push_back(m);
+                }
 
-                std::cout << "Vector defore sort:\n";
-                printVector(determinantVector);
+                std::cout << "\nBefore sorting by determinant:\n";
+                for (size_t i = 0; i < matrices.size(); ++i) {
+                    std::cout << matrices[i].determinant() << " ";
+                }
+                std::cout << std::endl;
 
                 std::sort(
-                    determinantVector.begin(),
-                    determinantVector.end(),
-                    [](const int& element1, const int& element2) {
-                        return element1 < element2;
+                    matrices.begin(), 
+                    matrices.end(),
+                    [](const SquareMatrix& a, const SquareMatrix& b) {
+                        return a.determinant() < b.determinant();
                     }
                 );
-
-                std::cout << "Vector after sort:\n";
-                printVector(determinantVector);
+                
+                std::cout << "\nAfter sorting by determinant:\n";
+                for (size_t i = 0; i < matrices.size(); ++i) {
+                    std::cout << matrices[i].determinant() << " ";
+                }
+                std::cout << std::endl;
 
                 system("pause");
                 system("cls");
@@ -64,24 +56,34 @@ int main() {
             }
 
             case 2: {
-                determinantVector = {a.determinant(), b.determinant(), c.determinant(), d.determinant(), e.determinant()};
+                for (int i = 0; i < 5; ++i) {
+                    SquareMatrix m(2);
+                    m.fillMatrix();
+                    matrices.push_back(m);
+                }
 
-                std::cout << "Vector defore remove:\n";
-                printVector(determinantVector);
+                std::cout << "\nBefore remove:\n";
+                for (size_t i = 0; i < matrices.size(); ++i) {
+                    std::cout << matrices[i].determinant() << " ";
+                }
+                std::cout << std::endl;
 
-                determinantVector.erase (
+                matrices.erase(
                     std::remove_if(
-                        determinantVector.begin(),
-                        determinantVector.end(),
-                        [](const int& element) {
-                            return element % 2 == 0;
+                        matrices.begin(), 
+                        matrices.end(),
+                        [](const SquareMatrix& m) { 
+                            return m.determinant() % 2 == 0; 
                         }
                     ),
-                    determinantVector.end()
+                    matrices.end()
                 );
-
-                std::cout << "Vector after remove:\n";
-                printVector(determinantVector);
+                
+                std::cout << "\nAfter sorting by determinant:\n";
+                for (size_t i = 0; i < matrices.size(); ++i) {
+                    std::cout << matrices[i].determinant() << " ";
+                }
+                std::cout << std::endl;
 
                 system("pause");
                 system("cls");
@@ -89,12 +91,14 @@ int main() {
             }
 
             case 3:
-                exit(0);
+                exit(1);
                 break;
 
             default:
                 system("cls");
                 continue;
         }
-    }
+    }   
+    
+    return 0;
 }
