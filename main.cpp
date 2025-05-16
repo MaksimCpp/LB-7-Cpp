@@ -25,7 +25,7 @@ int main() {
         switch (choice) {
             case 1: {
                 for (int i = 0; i < 5; ++i) {
-                    SquareMatrix m(2);
+                    SquareMatrix m(i + 1);
                     m.fillMatrix();
                     matrices.push_back(m);
                 }
@@ -57,7 +57,7 @@ int main() {
 
             case 2: {
                 for (int i = 0; i < 5; ++i) {
-                    SquareMatrix m(2);
+                    SquareMatrix m(i + 1);
                     m.fillMatrix();
                     matrices.push_back(m);
                 }
